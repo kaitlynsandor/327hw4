@@ -2,16 +2,22 @@ class Player:
     def __init__(self, type):
         self.type = type
 
-    def next_move(self, move, board):
+    def next_move(self, moves, board):
         pass
 
+
 class HumanPlayer(Player):
-    pass
+    def next_move(self, moves, board):
+        pass
+
 
 class RandomPlayer(Player):
-    pass
+    def next_move(self, moves, board):
+        pass
+
 
 class ComputerPlayer(Player):
-    pass
+    def next_move(self, moves, board):
+        pass
 
 
