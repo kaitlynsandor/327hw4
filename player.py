@@ -6,6 +6,12 @@ class Player:
         pass
 
 class HumanPlayer(Player):
+    pass
 
+class RandomPlayer(Player):
+    pass
+
+class ComputerPlayer(Player):
+    pass
 
 
