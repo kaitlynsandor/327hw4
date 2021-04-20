@@ -1,6 +1,6 @@
 class Player:
-    def __init__(self, type):
-        self.type = type
+    def __init__(self):
+        pass
 
     def next_move(self, moves):
         pass
