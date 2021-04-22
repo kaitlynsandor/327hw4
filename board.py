@@ -1,5 +1,6 @@
 from move_adapter import *
 from piece import *
+from player import *
 
 class Move:
     def __init__(self, start, end, piece, type, jumps=None):
@@ -103,6 +104,10 @@ class Board:
 
     def make_move(self, moves, choice=None,): # calls the player move function to get the best move
         adapter = Move_Adapter()
+        if type(self.cur_player) != HumanPlayer():
+            move = self.cur_player.next_move(moves)
+        else:
+            move = moves[choice]
         pass # update the board to reflect the made move, return the new board for the undo function
 
     def update_cur_player(self):
