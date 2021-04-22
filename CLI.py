@@ -32,13 +32,19 @@ class CLI:
 
         while True:
             self._display_menu()
-            if self.board.check_winner():
-                print('yay end of game')
             moves = self.board.available_moves_all()
+            if self.board.check_winner(moves):
+                print('yay end of game')
             if type(self.board.cur_player) == HumanPlayer:
-                print('Select a piece to move')
-                choice = input()
-                result = self.board.available_moves_piece(choice, moves)
+                result = False
+                while result is False:
+                    print('Select a piece to move')
+                    choice = input()
+                    result = self.board.available_moves_piece(choice, moves)
+                    if not result:
+                        print('That piece cannot move')
+                for i in range(0, len(result)):
+                    print(str(i) + ': '+ str(result[i]))
                 print('Select a move by entering the corresponding index')
                 choice = input()
                 self.board.make_move(choice, result)
