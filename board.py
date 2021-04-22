@@ -41,7 +41,7 @@ class Board:
         for i in range(0, len(self.board)):
             for j in range(0, len(self.board[i])):
                 moves = []
-                piece = self.board[i][j]
+                piece = self.board[i][j] # TO DO: make sure i and j are in bounds before trying to read from them
                 if type(piece) == Piece and piece.color == self.cur_player.color:
                     if not piece.is_king:
                         spaces_to_check = []
