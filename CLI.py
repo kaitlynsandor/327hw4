@@ -7,11 +7,7 @@ class CLI:
 
     def __init__(self):
         self.board = Board()
-        self.commands = {}
-        self.move = 1
         self.settings = None
-        self.colors = ['black', 'white']
-        self.cur_player = None
 
     def get_players(self, inputs):
             output = []
@@ -30,7 +26,7 @@ class CLI:
 
     def _display_menu(self):
         print(self.board)
-        print(f"Turn: {self.move}, {self.colors[self.move%2]}")
+        print(f"Turn: {self.board.move}, {self.board.cur_player.color}")
 
     def run(self):
 
@@ -39,7 +35,7 @@ class CLI:
             if self.board.check_winner():
                 print('yay end of game')
             moves = self.board.available_moves_all()
-            if type(self.cur_player) == HumanPlayer:
+            if type(self.board.cur_player) == HumanPlayer:
                 print('Select a piece to move')
                 choice = input()
                 result = self.board.available_moves_piece(choice, moves)
@@ -48,10 +44,8 @@ class CLI:
                 self.board.make_move(choice, result)
             else:
                 self.board.make_move(moves)
-
-
-            self.move += 1
-            self.cur_player = self.settings[(self.move+1) % 2] # update current player to switch
+            self.board.update_move()
+            self.board.update_cur_player()
 
 
 if __name__ == "__main__":
@@ -63,7 +57,9 @@ if __name__ == "__main__":
         settings = inputs + settings[len(inputs):]
     else:
         settings = inputs
+    settings[0].color = 'white'
+    settings[1].color = 'black'
     cli.settings = settings
-    print(settings)
-    cli.cur_player = settings[0]
+    cli.board.cur_player = settings[0]
+    cli.board.settings = settings
     cli.run()

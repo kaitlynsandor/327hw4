@@ -1,6 +1,6 @@
 class Player:
     def __init__(self):
-        pass
+        self.color = None
 
     def next_move(self, moves):
         pass
