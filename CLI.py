@@ -8,6 +8,10 @@ class CLI:
     def __init__(self):
         self.board = Board()
         self.commands = {}
+        self.move = 1
+        self.settings = None
+        self.colors = ['black', 'white']
+        self.cur_player = None
 
     def get_players(self, inputs):
             output = []
@@ -25,31 +29,41 @@ class CLI:
             return output
 
     def _display_menu(self):
-        print(f"Current Board: {self.board}")
-        options = ", ".join(self.commands.keys())
-        print('Enter command')
-        print(options)
+        print(self.board)
+        print(f"Turn: {self.move}, {self.colors[self.move%2]}")
 
     def run(self):
 
         while True:
             self._display_menu()
-            choice = input()
-            action = self.commands.get(choice)
-            if action:
-                action()
+            if self.board.check_winner():
+                print('yay end of game')
+            moves = self.board.available_moves_all()
+            if type(self.cur_player) == HumanPlayer:
+                print('Select a piece to move')
+                choice = input()
+                result = self.board.available_moves_piece(choice, moves)
+                print('Select a move by entering the corresponding index')
+                choice = input()
+                self.board.make_move(choice, result)
             else:
-                print("{0} is not a valid choice".format(choice))
+                self.board.make_move(moves)
+
+
+            self.move += 1
+            self.cur_player = self.settings[(self.move+1) % 2] # update current player to switch
 
 
 if __name__ == "__main__":
-    inputs = str(sys.argv)
-    settings = [HumanPlayer(), HumanPlayer(), 'off']
+    inputs = list(sys.argv)
     cli = CLI()
-    inputs = cli.get_players(inputs)
+    settings = [HumanPlayer(), HumanPlayer(), 'off']
+    inputs = cli.get_players(inputs[1:])
     if len(inputs) < len(settings):
-        settings = inputs + settings[len(inputs)+1:]
+        settings = inputs + settings[len(inputs):]
     else:
         settings = inputs
-
+    cli.settings = settings
+    print(settings)
+    cli.cur_player = settings[0]
     cli.run()
