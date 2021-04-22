@@ -43,27 +43,25 @@ class Board:
                 moves = []
                 piece = self.board[i][j] # TO DO: make sure i and j are in bounds before trying to read from them
                 if type(piece) == Piece and piece.color == self.cur_player.color:
-                    if not piece.is_king:
-                        spaces_to_check = []
-                        if piece.color == 'black':
-                            spaces_to_check.append([self.board[i+1][j-1], [i+1, j-1]])
-                            spaces_to_check.append([self.board[i+1][j+1], [i+1, j+1]])
-                        else: # if the piece is white
-                            spaces_to_check.append([self.board[i - 1][j - 1], [i-1, j-1]])
-                            spaces_to_check.append([self.board[i - 1][j + 1], [i-1], [j+1]])
+                    spaces_to_check = []
+                    if piece.color == 'black' or piece.is_king:
+                        spaces_to_check.append([self.board[i+1][j-1], [i+1, j-1]])
+                        spaces_to_check.append([self.board[i+1][j+1], [i+1, j+1]])
+                    elif piece.color == 'white' or piece.is_king: # if the piece is white
+                        spaces_to_check.append([self.board[i - 1][j - 1], [i-1, j-1]])
+                        spaces_to_check.append([self.board[i - 1][j + 1], [i-1], [j+1]])
 
-                        for space in spaces_to_check:
-                            if type(space[0]) == Piece and space[0].color != self.cur_player.color:
-                                # check for how many jumps possible, add this to a move and save it
-                                pass
-                            elif space[0] == '◻':
-                                moves.append(Move(adapter.convert_matrix_coord([i, j]), # position we start
-                                                  adapter.convert_matrix_coord(space[1]), # position we end
-                                                  space[0], #piece
-                                                  'basic move')) #type of move
-                    else:
-                        # TO DO: implement king moves
-                        pass
+                    for space in spaces_to_check:
+                        if type(space[0]) == Piece and space[0].color != self.cur_player.color:
+                            # check for how many jumps possible, add this to a move and save it
+                            pass
+                        elif space[0] == '◻':
+                            moves.append(Move(adapter.convert_matrix_coord([i, j]), # position we start
+                                              adapter.convert_matrix_coord(space[1]), # position we end
+                                              space[0], #piece
+                                              'basic move')) #type of move
+                    # TO DO: implement king moves
+
                 final_moves[adapter.convert_matrix_coord([i,j])] = moves
                 pass
 
