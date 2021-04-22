@@ -39,15 +39,15 @@ class CLI:
                 result = False
                 while result is False:
                     print('Select a piece to move')
-                    choice = input()
-                    result = self.board.available_moves_piece(choice, moves)
+                    piece = input()
+                    result = self.board.available_moves_piece(piece, moves)
                     if not result:
                         print('That piece cannot move')
                 for i in range(0, len(result)):
                     print(str(i) + ': '+ str(result[i]))
                 print('Select a move by entering the corresponding index')
                 choice = input()
-                self.board.make_move(choice, result)
+                self.board.make_move(moves, choice, piece)
             else:
                 self.board.make_move(moves)
             self.board.update_move()

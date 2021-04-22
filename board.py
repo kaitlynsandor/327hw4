@@ -101,14 +101,22 @@ class Board:
                 return False
         return 'draw'
 
-
-    def make_move(self, moves, choice=None,): # calls the player move function to get the best move
+    def make_move(self, moves, choice=None, piece=None): # calls the player move function to get the best move
         adapter = Move_Adapter()
         if type(self.cur_player) != HumanPlayer():
             move = self.cur_player.next_move(moves)
         else:
-            move = moves[choice]
-        pass # update the board to reflect the made move, return the new board for the undo function
+            move = moves[piece][choice]
+        end_pos = adapter.convert_checker_coord(move.end)
+        start_pos = adapter.convert_checker_coord(move.start)
+        self.board[end_pos] = move.piece
+        self.board[start_pos] = '◻'
+
+        if move.type == 'jump move':
+            for jump in move.jumps:
+                coord = adapter.convert_checker_coord(jump)
+                self.board[coord] = '◻'
+        return self.board
 
     def update_cur_player(self):
         self.cur_player = self.settings[(self.move + 1) % 2]
