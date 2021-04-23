@@ -1,9 +1,9 @@
 class Board_Version_Manager:
     def __init__(self):
-        self.history = []
+        self._history = []
 
     def append_state(self, state):
-        pass
+        self._history.append(state)
 
     def update_history(self):
         pass
