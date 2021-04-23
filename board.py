@@ -3,6 +3,7 @@ from piece import *
 from player import *
 
 class Move:
+
     def __init__(self, start, end, piece, type, jumps=None):
         self.type = type
         self.piece = piece
@@ -31,6 +32,7 @@ class Board:
         self.move = 1
         self.settings = None
         self.moves_since_last_capture = 0
+
 
     def available_moves_piece(self, move_piece, moves):
         pieces = moves.keys()
@@ -67,7 +69,7 @@ class Board:
                                 l = j + 2 * col_dir
                                 while k < len(self.board) and j < len(self.board[0]) and type(self.board[k][l]) == Piece \
                                         and self.board[k][l].color == space[0].color:
-                                    if 0 <= k + row_dir <= len(self.board) and 0 <=l + col_dir <= \
+                                    if 0 <= k + row_dir <= len(self.board) and 0 <= l + col_dir <= \
                                             len(self.board[0]):
                                         if self.board[k + row_dir][l + col_dir] == '◻':
                                             jumped.append([adapter.convert_matrix_coord([k, l])])
@@ -116,6 +118,9 @@ class Board:
             for jump in move.jumps:
                 coord = adapter.convert_checker_coord(jump)
                 self.board[coord] = '◻'
+            self.moves_since_last_capture = 0
+        else:
+            self.moves_since_last_capture += 1
         return self.board
 
     def update_cur_player(self):

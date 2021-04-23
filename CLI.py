@@ -3,6 +3,7 @@ from move_adapter import *
 from player import *
 import sys
 
+
 class CLI:
 
     def __init__(self):
