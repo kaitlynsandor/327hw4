@@ -2,6 +2,8 @@ from board import *
 from move_adapter import *
 from player import *
 import sys
+from board_version_manager import *
+import copy
 
 
 class CLI:
@@ -9,6 +11,7 @@ class CLI:
     def __init__(self):
         self.board = Board()
         self.settings = None
+        self.board_version_manager = Board_Version_Manager()
 
     def get_players(self, inputs):
             output = []
@@ -30,12 +33,13 @@ class CLI:
         print(f"Turn: {self.board.move}, {self.board.cur_player.color}")
 
     def run(self):
-
+        if self.settings[2] == 'on':
+            self.board_version_manager.append_state(copy.deepcopy(self.board))
         while True:
             self._display_menu()
             moves = self.board.available_moves_all()
-            if self.board.check_winner(moves):
-                print('yay end of game')
+            if self.board.check_winner(moves) is not False:
+                print(self.board.check_winner(moves))
             if type(self.board.cur_player) == HumanPlayer:
                 result = False
                 while result is False:
@@ -53,6 +57,9 @@ class CLI:
                 self.board.make_move(moves)
             self.board.update_move()
             self.board.update_cur_player()
+
+            if self.settings[2] == 'on':
+                self.board_version_manager.append_state(copy.deepcopy(self.board))
 
 
 if __name__ == "__main__":

@@ -2,6 +2,9 @@ class Board_Version_Manager:
     def __init__(self):
         self.history = []
 
+    def append_state(self, state):
+        pass
+
     def update_history(self):
         pass
 
@@ -13,3 +16,4 @@ class Board_Version_Manager:
 
     def next(self):
         pass
+
