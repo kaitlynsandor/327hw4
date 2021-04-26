@@ -1,6 +1,7 @@
 import random
 
-class Player:
+
+class Player: # each player has to have a color assigned to it, and then a next_move that specifies how they want to mvoe
     def __init__(self):
         self.color = None
 
@@ -9,12 +10,12 @@ class Player:
 
 
 class HumanPlayer(Player):
-    def next_move(self, moves):
+    def next_move(self, moves): # does nothing, this implementation can be optimized later
         pass
 
 
 class RandomPlayer(Player):
-    def next_move(self, moves):
+    def next_move(self, moves): # gets a random move from all available moves, available moves in format {"piece":[list of moves]}
         all_moves = []
         for piece in moves:
             for move in moves[piece]:
@@ -24,7 +25,7 @@ class RandomPlayer(Player):
         return choice
 
 
-class ComputerPlayer(Player):
+class ComputerPlayer(Player): # same idea, but gets move with the most jumps per move
     def next_move(self, moves):
         jump_moves = []
         best_move = None

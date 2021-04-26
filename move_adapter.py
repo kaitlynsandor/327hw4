@@ -1,4 +1,4 @@
-class Move_Adapter:
+class Move_Adapter: # copied straight from his assignment descriptoins, to convert between like b6 and the coordinates (1,5)
 
     def convert_checker_coord(self, coord):
         col = coord[:1]
