@@ -8,18 +8,18 @@ class Board_Version_Manager: # set up the version manager
         self._pointer += 1
 
     def undo(self): # move our pointer and return a new board
-        if self._pointer > 0:
+        if self._pointer > 1:
             self._pointer -= 1
-            return self._history[self._pointer]
+            return self._history[self._pointer-1]
         else:
-            pass
+            return self._history[self._pointer-1]
 
     def re_do(self):# move our pointer and return a new board
         if self._pointer < len(self._history):
             self._pointer += 1
-            return self._history[self._pointer]
+            return self._history[self._pointer-1]
         else:
-            pass 
+            return self._history[self._pointer-1]
 
     def next(self):
         # chop off the part of the array we dont need
