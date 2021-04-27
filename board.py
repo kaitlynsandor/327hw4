@@ -111,6 +111,11 @@ class Board:
             move = moves[piece][int(choice)] # otherwise read it from the all moves array at their specified choice, choice is the move associated with the piece
         end_pos = adapter.convert_checker_coord(move.end) # get the end position in coordinates
         start_pos = adapter.convert_checker_coord(move.start) # get the start position in coordinates
+        if end_pos[1] == '1' and move.piece.color == 'white':
+            move.piece.update_king(True)
+        elif end_pos[1] == '8' and move.piece.color == 'black':
+            move.piece.update_king(True)
+
         self.board[int(end_pos[0])][int(end_pos[1])] = str(move.piece) # move the piece
         self.board[int(start_pos[0])][int(start_pos[1])] = '◻' # set the beginning space to be empty
 

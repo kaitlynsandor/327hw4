@@ -1,14 +1,14 @@
 class Piece:
     def __init__(self, symbol, color='white',  is_king=False, position=False,):
         self.symbol = symbol # this is the actual board sympol
-        if self.symbol == '⚇' or self.symbol == '⚉': # set the "is king"
-            self.is_king = True
-        else:
-            self.is_king = False
         if self.symbol == '⚈' or self.symbol == '⚉':  # set the color
             self.color = 'black'
         else:
             self.color = color
+
+    def update_king(self, boolean):
+        self.is_king = boolean
+
 
     def spaces_to_check(self, i, j, board): # spaces to check to see if there is an available move, if black checking down the board, if white up the board, if king in both directions
         spaces_to_check = []
