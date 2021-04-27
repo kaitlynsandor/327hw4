@@ -76,6 +76,7 @@ class Board:
                                             end = adapter.convert_matrix_coord([k + row_dir, l + col_dir])
                                         k = k + row_dir
                                         l = l + col_dir # at the end (nexct line) append all of the spaces we jumped, the start and end point
+
                                 moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
                                                   adapter.convert_matrix_coord(end),  # position we end
                                                   piece,  # piece

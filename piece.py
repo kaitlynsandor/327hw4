@@ -5,6 +5,7 @@ class Piece:
             self.color = 'black'
         else:
             self.color = color
+        self.is_king = is_king
 
     def update_king(self, boolean):
         self.is_king = boolean
