@@ -36,7 +36,6 @@ class CLI:
         if self.settings[2] == 'on': # if we are saving board came history, save the initial board state
             self.board_version_manager.append_state(copy.deepcopy(self.board))
         while True: # enter the game
-            self._display_menu()
             moves = self.board.available_moves_all() # get all of the available moves for the current player, all pieces
             if self.board.check_winner(moves) is not False: # check if there is a winner on the board, if there is exit the game
                 print(self.board.check_winner(moves))
@@ -44,6 +43,7 @@ class CLI:
             if type(self.board.cur_player) == HumanPlayer: # if we have a human player we need to get more data from them
                 result = False
                 while result is False: # while the human selects a piece that cannot move
+                    self._display_menu()
                     message = 'Select a piece to move'
                     if self.settings[2] == 'on':
                         message += ', undo, redo, or next.'
