@@ -39,7 +39,7 @@ class ComputerPlayer(Player): # same idea, but gets move with the most jumps per
                     max_jump = len(move.jumps)
                     best_move = []
                     best_move.append(move)
-                if len(move.jumps)  == max_jump:
+                if len(move.jumps) == max_jump:
                     best_move.append(move)
         num = 0
         if len(best_move) > 1:

@@ -73,6 +73,7 @@ class CLI:
                 choice = input()
                 self.board.make_move(moves, choice, piece) # update the board to reflect the move the player specified
             else:
+                self._display_menu()
                 self.board.make_move(moves) # if not a human player, go right into make move with the AI
             self.board.update_move() # increments our current turn by one
             self.board.update_cur_player() # flips what palyer is current player
