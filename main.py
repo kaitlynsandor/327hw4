@@ -59,8 +59,12 @@ class CLI:
                     else:
                         piece = user_in
                     result = self.board.available_moves_piece(piece, moves) # see if there are available moves in our "all moves" list for our current piece
-                    if not result: # if there is no available moves, try again
+                    if result == 'no move': # if there is no available moves, try again
                         print('That piece cannot move')
+                    elif result == 'no piece':
+                        print('No piece at that location')
+                    elif result == 'wrong piece':
+                        print('That is not your piece')
                 for i in range(0, len(result)): # once they select a piece that can move, print out all the moves for that piece
                     print(str(i) + ': '+ str(result[i]))
                 print('Select a move by entering the corresponding index')

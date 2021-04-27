@@ -36,8 +36,16 @@ class Board:
 
     def available_moves_piece(self, move_piece, moves): # this checks all of the moves available from available_moves_all to see if the piece can be moved
         pieces = moves.keys()
-        if move_piece not in pieces or moves[move_piece] == []: # if there are no moves associated with this piece, cant move it
-            return False
+        adapter = Move_Adapter()
+        coordinates_of_piece = adapter.convert_checker_coord(move_piece)
+        board_item = self.board[int(coordinates_of_piece[0])][int(coordinates_of_piece[1])]
+
+        if move_piece not in pieces:
+            return 'no piece'
+        elif type(board_item) == Piece and board_item.color != self.cur_player.color:
+            return 'wrong piece'
+        elif board_item == '◻' or moves[move_piece] == []: # if there are no moves associated with this piece, cant move it
+            return 'no move'
         else:
             for move in moves[move_piece]: # if the piece is a jump piece we can automatically use it
                 if move.type == 'jump move':
