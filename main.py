@@ -36,6 +36,7 @@ class CLI:
         if self.settings[2] == 'on': # if we are saving board came history, save the initial board state
             self.board_version_manager.append_state(copy.deepcopy(self.board))
         while True: # enter the game
+            self._display_menu()
             moves = self.board.available_moves_all() # get all of the available moves for the current player, all pieces
             if self.board.check_winner(moves) is not False: # check if there is a winner on the board, if there is exit the game
                 print(self.board.check_winner(moves))
@@ -43,18 +44,20 @@ class CLI:
             if type(self.board.cur_player) == HumanPlayer: # if we have a human player we need to get more data from them
                 result = False
                 while result is False: # while the human selects a piece that cannot move
-                    self._display_menu()
                     message = 'Select a piece to move'
                     if self.settings[2] == 'on':
                         message += ', undo, redo, or next.'
                     print(message)
                     user_in = input()
                     if self.settings[2] == 'on' and user_in == 'undo':
-                        self.board = self.board_version_manager.undo()  
+                        self.board = self.board_version_manager.undo()
+                        self._display_menu()
                     elif self.settings[2] == 'on' and user_in == 'redo':
                         self.board = self.board_version_manager.re_do()
+                        self._display_menu()
                     elif self.settings[2] == 'on' and user_in == 'next':
                         self.board_version_manager.next()
+                        self._display_menu()
                     else:
                         piece = user_in
                         result = self.board.available_moves_piece(piece, moves) # see if there are available moves in our "all moves" list for our current piece
@@ -73,7 +76,6 @@ class CLI:
                 choice = input()
                 self.board.make_move(moves, choice, piece) # update the board to reflect the move the player specified
             else:
-                self._display_menu()
                 self.board.make_move(moves) # if not a human player, go right into make move with the AI
             self.board.update_move() # increments our current turn by one
             self.board.update_cur_player() # flips what palyer is current player
