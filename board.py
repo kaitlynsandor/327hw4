@@ -39,12 +39,11 @@ class Board:
         adapter = Move_Adapter()
         coordinates_of_piece = adapter.convert_checker_coord(move_piece)
         board_item = self.board[int(coordinates_of_piece[0])][int(coordinates_of_piece[1])]
-
-        if move_piece not in pieces:
+        if type(board_item) != Piece:
             return 'no piece'
-        elif type(board_item) == Piece and board_item.color != self.cur_player.color:
+        elif board_item.color != self.cur_player.color:
             return 'wrong piece'
-        elif board_item == '◻' or moves[move_piece] == []: # if there are no moves associated with this piece, cant move it
+        elif move_piece not in pieces or moves[move_piece] == []: # if there are no moves associated with this piece, cant move it
             return 'no move'
         else:
             for move in moves[move_piece]: # if the piece is a jump piece we can automatically use it
@@ -70,20 +69,21 @@ class Board:
                         if type(space[0]) == Piece and space[0].color != self.cur_player.color: # if we can jump this piece
                             row_dir = space[1][0] - i # get the direction our space is in (ex. up and to the left)
                             col_dir = space[1][1] - j
-                            if self.board[i + row_dir][j + col_dir] == '◻': # check for double jumps
+                            if str(self.board[i + 2*row_dir][j + 2*col_dir]) == '◻': # check for double jumps
                                 jumped = [adapter.convert_matrix_coord([space[1][0], space[1][1]])]
-                                end = adapter.convert_matrix_coord([i + row_dir, j + col_dir])
-                                k = i + 2 * row_dir
-                                l = j + 2 * col_dir
-                                while k < len(self.board) and j < len(self.board[0]) and type(self.board[k][l]) == Piece \
-                                        and self.board[k][l].color == space[0].color: # while we have empty spaces, just keep appending them
-                                    if 0 <= k + row_dir <= len(self.board) and 0 <= l + col_dir <= \
-                                            len(self.board[0]):
-                                        if self.board[k + row_dir][l + col_dir] == '◻':
-                                            jumped.append([adapter.convert_matrix_coord([k, l])])
-                                            end = adapter.convert_matrix_coord([k + row_dir, l + col_dir])
-                                        k = k + row_dir
-                                        l = l + col_dir # at the end (nexct line) append all of the spaces we jumped, the start and end point
+                                end = [i + 2*row_dir, j + 2*col_dir]
+
+                                # k = i + 3 * row_dir
+                                # l = j + 3 * col_dir
+                                # while k < len(self.board) and j < len(self.board[0]) and type(self.board[k][l]) == Piece \
+                                #         and self.board[k][l].color == space[0].color: # while we have empty spaces, just keep appending them
+                                #     if 0 <= k + row_dir <= len(self.board) and 0 <= l + col_dir <= \
+                                #             len(self.board[0]):
+                                #         if self.board[k + row_dir][l + col_dir] == '◻':
+                                #             jumped.append([adapter.convert_matrix_coord([k, l])])
+                                #             end = adapter.convert_matrix_coord([k + row_dir, l + col_dir])
+                                #         k = k + row_dir
+                                #         l = l + col_dir # at the end (nexct line) append all of the spaces we jumped, the start and end point
 
                                 moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
                                                   adapter.convert_matrix_coord(end),  # position we end
@@ -125,13 +125,13 @@ class Board:
         elif end_pos[1] == '8' and move.piece.color == 'black':
             move.piece.update_king(True)
 
-        self.board[int(end_pos[0])][int(end_pos[1])] = str(move.piece) # move the piece
+        self.board[int(end_pos[0])][int(end_pos[1])] = (move.piece) # move the piece
         self.board[int(start_pos[0])][int(start_pos[1])] = '◻' # set the beginning space to be empty
 
         if move.type == 'jump move': # if there is a jump move, remove all of the pieces we "jumped"
             for jump in move.jumps:
                 coord = adapter.convert_checker_coord(jump)
-                self.board[coord] = '◻' # set the piece to be empty if we jumped it
+                self.board[int(coord[0])][int(coord[1])] = '◻' # set the piece to be empty if we jumped it
             self.moves_since_last_capture = 0 # update moves since last capture to show that we have captured
         else:
             self.moves_since_last_capture += 1 # but if there were no jumps update to reflect that
