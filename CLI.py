@@ -44,7 +44,7 @@ class CLI:
             if type(self.board.cur_player) == HumanPlayer: # if we have a human player we need to get more data from them
                 result = False
                 while result is False: # while the human selects a piece that cannot move
-                    message = 'Select a piece to move' '
+                    message = 'Select a piece to move'
                     if self.settings[2] == 'on':
                         message + ', undo, redo, or next.'
                     print(message)
@@ -80,7 +80,7 @@ class CLI:
 if __name__ == "__main__":
     inputs = list(sys.argv) # get the command line arguments for history and type of player
     cli = CLI() # create a command line manager object
-    settings = [HumanPlayer(), HumanPlayer(), 'off'] # set the default settings
+    settings = [HumanPlayer(), HumanPlayer(), 'on'] # set the default settings
     inputs = cli.get_players(inputs[1:]) # get the actual settings from the command line arguments
     if len(inputs) < len(settings): # if not all of the settings specified, get the remaining from the defaults
         settings = inputs + settings[len(inputs):]
