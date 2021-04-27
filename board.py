@@ -14,7 +14,12 @@ class Move:
     def __repr__(self): # basic print out of the move
         final_str = self.type + ': ' + self.start + '->' + self.end
         if self.type == 'jump move':
-            final_str += ', capturing ' + str(self.jumps)
+            jumps = '['
+            for jump in self.jumps:
+                jumps+=(jump+', ')
+            jumps = jumps[:-2]
+            jumps += ']'
+            final_str += ', capturing ' + jumps
         return final_str
 
 
@@ -53,7 +58,7 @@ class Board:
                 for piece in pieces: # if piece is not a jump move, we can only use it if there are no other jump moves
                     for move in moves[piece]:
                         if move.type == 'jump move':
-                            return False
+                            return 'no move'
                 return moves[move_piece]
 
     def available_moves_all(self): # this function does not yet support kings jumping in all directions
