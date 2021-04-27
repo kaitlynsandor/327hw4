@@ -16,7 +16,6 @@ class Piece:
 
     def spaces_to_check(self, i, j, board): # spaces to check to see if there is an available move, if black checking down the board, if white up the board, if king in both directions
         spaces_to_check = []
-        print(self.is_king, i, j, self.color)
         if self.color == 'black' or self.is_king:
             if i < len(board) - 1:
                 if j > 0:
