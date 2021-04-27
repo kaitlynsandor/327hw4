@@ -17,6 +17,7 @@ class Board_Version_Manager: # set up the version manager
     def re_do(self):# move our pointer and return a new board
         if self._pointer < len(self._history):
             self._pointer += 1
+            return self._history[self._pointer]
         else:
             pass 
 
