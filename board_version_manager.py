@@ -5,10 +5,12 @@ class Board_Version_Manager: # set up the version manager
 
     def append_state(self, state): # just add the current board state to our history list
         self._history.append(state)
+        self._pointer += 1
 
     def undo(self): # move our pointer and return a new board
         if self._pointer > 0:
             self._pointer -= 1
+            return self._history[._pointer]
         else:
             pass
 
@@ -20,6 +22,5 @@ class Board_Version_Manager: # set up the version manager
 
     def next(self):
         # chop off the part of the array we dont need
-        # set pointer back to 0
         self._history = self._history[:self._pointer]
 
