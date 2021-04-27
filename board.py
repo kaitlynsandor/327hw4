@@ -4,7 +4,7 @@ from player import *
 
 class Move:
 
-    def __init__(self, start, end, piece, type, jumps=None):
+    def __init__(self, start, end, piece, type, jumps=[]):
         self.type = type # is this a jump move or a basic move?
         self.piece = piece # the piece object associated with this move
         self.start = start # starting position
@@ -74,9 +74,12 @@ class Board:
                         if type(space[0]) == Piece and space[0].color != self.cur_player.color: # if we can jump this piece
                             row_dir = space[1][0] - i # get the direction our space is in (ex. up and to the left)
                             col_dir = space[1][1] - j
-                            if str(self.board[i + 2*row_dir][j + 2*col_dir]) == '◻': # check for double jumps
-                                jumped = [adapter.convert_matrix_coord([space[1][0], space[1][1]])]
-                                end = [i + 2*row_dir, j + 2*col_dir]
+                            new_i = i + 2*row_dir
+                            new_j = j + 2*col_dir
+                            if not self.out_of_range(new_i, new_j):
+                                if str(self.board[new_i][new_j]) == '◻': # check for double jumps
+                                    jumped = [adapter.convert_matrix_coord([space[1][0], space[1][1]])]
+                                    end = [new_i, new_j]
 
                                 # k = i + 3 * row_dir
                                 # l = j + 3 * col_dir
@@ -90,11 +93,11 @@ class Board:
                                 #         k = k + row_dir
                                 #         l = l + col_dir # at the end (nexct line) append all of the spaces we jumped, the start and end point
 
-                                moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
+                                    moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
                                                   adapter.convert_matrix_coord(end),  # position we end
                                                   piece,  # piece
                                                   'jump move',
-                                                jumped))  # type of move
+                                                  jumped))  # type of move
                         elif space[0] == '◻': # otherwise if there is not a jump but the space to check is empty, we can move to that space so add that move
                             moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
                                               adapter.convert_matrix_coord((space[1][0], space[1][1])),  # position we end
@@ -107,7 +110,11 @@ class Board:
     def check_winner(self, moves):
         if self.moves_since_last_capture == 50: # if there have been more than 50 turns without a caputure, its a draw
             return 'draw'
-        if len(moves) == 0: # if the current player cannot move, the other player wins
+        all_moves = []
+        for piece in moves:
+            for move in moves[piece]:
+                all_moves.append(move)
+        if len(all_moves) == 0: # if the current player cannot move, the other player wins
             if self.cur_player.color == 'white':
                 return 'black has won'
             else:
@@ -117,6 +124,13 @@ class Board:
                 return False
         return 'draw'
 
+    def out_of_range(self, i , j):
+        if i >= len(self.board) or i < 0 :
+            return True
+        if j >= len(self.board[0]) or j < 0:
+            return True
+        return False
+
     def make_move(self, moves, choice=None, piece=None): # calls the player move function to get the best move
         adapter = Move_Adapter()
         if type(self.cur_player) != HumanPlayer:
@@ -125,9 +139,9 @@ class Board:
             move = moves[piece][int(choice)] # otherwise read it from the all moves array at their specified choice, choice is the move associated with the piece
         end_pos = adapter.convert_checker_coord(move.end) # get the end position in coordinates
         start_pos = adapter.convert_checker_coord(move.start) # get the start position in coordinates
-        if end_pos[1] == '1' and move.piece.color == 'white':
+        if end_pos[0] == 0 and move.piece.color == 'white':
             move.piece.update_king(True)
-        elif end_pos[1] == '8' and move.piece.color == 'black':
+        elif end_pos[0] == 7 and move.piece.color == 'black':
             move.piece.update_king(True)
 
         self.board[int(end_pos[0])][int(end_pos[1])] = (move.piece) # move the piece

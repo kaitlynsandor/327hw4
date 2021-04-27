@@ -20,7 +20,7 @@ class CLI:
                     output.append(HumanPlayer())
                 elif input == 'random':
                     output.append(RandomPlayer())
-                elif input == 'computer':
+                elif input == 'greedy':
                     output.append(ComputerPlayer())
                 elif input == 'on':
                     output.append('on')

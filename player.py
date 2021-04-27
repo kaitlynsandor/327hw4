@@ -20,25 +20,32 @@ class RandomPlayer(Player):
         for piece in moves:
             for move in moves[piece]:
                 all_moves.append(move)
-        num = random.randint(0, len(all_moves)-1)
+                if move.type == 'jump move':
+                    return move
+        num = 0
+        if len(all_moves) > 1:
+            num = random.randint(0, len(all_moves)-1)
         choice = all_moves[num]
         return choice
 
 
 class ComputerPlayer(Player): # same idea, but gets move with the most jumps per move
     def next_move(self, moves):
-        jump_moves = []
-        best_move = None
+        best_move = []
         max_jump = 0
         for piece in moves:
             for move in moves[piece]:
-                if move.type == 'jump move':
-                    jump_moves.append(move)
-        for move in jump_moves:
-            if len(move.jumps) > max_jump:
-                max_jump = len(move.jumps)
-                best_move = move
+                if len(move.jumps) > max_jump:
+                    max_jump = len(move.jumps)
+                    best_move = []
+                    best_move.append(move)
+                if len(move.jumps)  == max_jump:
+                    best_move.append(move)
+        num = 0
+        if len(best_move) > 1:
+            num = random.randint(0, len(best_move) - 1)
+        choice = best_move[num]
 
-        return best_move
+        return choice
 
 
