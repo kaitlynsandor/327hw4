@@ -44,8 +44,22 @@ class CLI:
             if type(self.board.cur_player) == HumanPlayer: # if we have a human player we need to get more data from them
                 result = False
                 while result is False: # while the human selects a piece that cannot move
-                    print('Select a piece to move')
-                    piece = input()
+                    message = 'Select a piece to move' '
+                    if self.settings[2] == 'on':
+                        message + ', undo, redo, or next.'
+                    print(message)
+                    user_in = input()
+                    if user_in == 'undo':
+                        self.board = self.board_version_manager.undo()
+                        pass
+                    elif user_in == 'redo':
+                        self.board = self.board_version_manager.re_do()
+                        pass
+                    elif user_in == 'next':
+                        self.board_version_manager.next()
+                        pass
+                    else:
+                        piece = user_in
                     result = self.board.available_moves_piece(piece, moves) # see if there are available moves in our "all moves" list for our current piece
                     if not result: # if there is no available moves, try again
                         print('That piece cannot move')
