@@ -78,13 +78,13 @@ class Board:
                                         l = l + col_dir # at the end (nexct line) append all of the spaces we jumped, the start and end point
                                 moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
                                                   adapter.convert_matrix_coord(end),  # position we end
-                                                  space[0],  # piece
+                                                  piece,  # piece
                                                   'jump move',
                                                 jumped))  # type of move
                         elif space[0] == '◻': # otherwise if there is not a jump but the space to check is empty, we can move to that space so add that move
                             moves.append(Move(adapter.convert_matrix_coord([i, j]),  # position we start
                                               adapter.convert_matrix_coord((space[1][0], space[1][1])),  # position we end
-                                              space[0],  # piece
+                                              piece,  # piece
                                               'basic move'))  # type of move
 
                         final_moves[adapter.convert_matrix_coord([i, j])] = moves # moves at each location we checked is equal to all the moves we found
@@ -105,14 +105,14 @@ class Board:
 
     def make_move(self, moves, choice=None, piece=None): # calls the player move function to get the best move
         adapter = Move_Adapter()
-        if type(self.cur_player) != HumanPlayer():
+        if type(self.cur_player) != HumanPlayer:
             move = self.cur_player.next_move(moves) # just get the move from the AI
         else:
-            move = moves[piece][choice] # otherwise read it from the all moves array at their specified choice, choice is the move associated with the piece
+            move = moves[piece][int(choice)] # otherwise read it from the all moves array at their specified choice, choice is the move associated with the piece
         end_pos = adapter.convert_checker_coord(move.end) # get the end position in coordinates
         start_pos = adapter.convert_checker_coord(move.start) # get the start position in coordinates
-        self.board[end_pos] = move.piece # move the piece
-        self.board[start_pos] = '◻' # set the beginning space to be empty
+        self.board[int(end_pos[0])][int(end_pos[1])] = str(move.piece) # move the piece
+        self.board[int(start_pos[0])][int(start_pos[1])] = '◻' # set the beginning space to be empty
 
         if move.type == 'jump move': # if there is a jump move, remove all of the pieces we "jumped"
             for jump in move.jumps:

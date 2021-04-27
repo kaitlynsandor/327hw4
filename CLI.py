@@ -46,18 +46,16 @@ class CLI:
                 while result is False: # while the human selects a piece that cannot move
                     message = 'Select a piece to move'
                     if self.settings[2] == 'on':
-                        message + ', undo, redo, or next.'
+                        message += ', undo, redo, or next.'
                     print(message)
                     user_in = input()
-                    if user_in == 'undo':
-                        self.board = self.board_version_manager.undo()
-                        pass
-                    elif user_in == 'redo':
-                        self.board = self.board_version_manager.re_do()
-                        pass
-                    elif user_in == 'next':
-                        self.board_version_manager.next()
-                        pass
+                    if self.settings[2] == 'on':
+                        if user_in == 'undo':
+                            self.board = self.board_version_manager.undo()
+                        elif user_in == 'redo':
+                            self.board = self.board_version_manager.re_do()
+                        elif user_in == 'next':
+                            self.board_version_manager.next()
                     else:
                         piece = user_in
                     result = self.board.available_moves_piece(piece, moves) # see if there are available moves in our "all moves" list for our current piece
@@ -80,7 +78,7 @@ class CLI:
 if __name__ == "__main__":
     inputs = list(sys.argv) # get the command line arguments for history and type of player
     cli = CLI() # create a command line manager object
-    settings = [HumanPlayer(), HumanPlayer(), 'on'] # set the default settings
+    settings = [HumanPlayer(), HumanPlayer(), 'off'] # set the default settings
     inputs = cli.get_players(inputs[1:]) # get the actual settings from the command line arguments
     if len(inputs) < len(settings): # if not all of the settings specified, get the remaining from the defaults
         settings = inputs + settings[len(inputs):]
